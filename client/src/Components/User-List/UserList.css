@@ -1,0 +1,25 @@
+.home-page{
+    background-color: black;
+   color: white;
+}
+
+.user-list{
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid white;
+}
+.user-list:hover{
+    background-color: grey;
+}
+
+.user-img{
+    height: 40px;
+    width: 40px;
+   border-radius: 50%;
+    margin-right: 20px;
+}
+
+.user-name{
+    font-weight: 500;
+}

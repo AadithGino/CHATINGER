@@ -1,0 +1,92 @@
+body{
+  
+}
+.ChatBox-container{
+  height: 100vh;
+  
+  background-color: grey;
+  width: 100%;
+}
+.chat-body{
+    overflow: scroll;
+    height: 83%;
+    background-color: grey;
+    overflow-x: hidden;
+    margin: 0;
+}
+.chat-body::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: #F5F5F5;
+}
+
+.chat-body::-webkit-scrollbar
+{
+	width: 6px;
+	background-color: #F5F5F5;
+}
+
+.chat-body::-webkit-scrollbar-thumb
+{
+	background-color: #000000;
+}
+
+.user-name{
+  margin: 0;
+}
+
+hr{
+  margin: 0;
+}
+
+.profile-image{
+  border-radius: 50px;
+  margin: 0;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.chat-header{
+  display: flex;
+  display: flex;
+  padding-left: 2rem;
+  border: none;
+  padding-top: 1rem;
+  height: 8vh;
+  background-color: black;
+  color: white;
+  margin: 0;
+  border-right: 1px solid white;
+}
+
+.chatBoxBottom {
+    background-color: darkgray;
+    padding: 1px;
+    margin: 0;
+    display: flex;
+    padding-left: 30px;
+    height: 9%;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .chatMessageInput {
+    width: 80%;
+    height: 45px;
+    padding: 10px;
+    border-radius: 50px;
+    margin: 0;
+  }
+  
+  .chatSubmitButton {
+    width: 70px;
+    height: 40px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: teal;
+    color: white;
+  }
+  .image-upload{
+    display: none;
+  }

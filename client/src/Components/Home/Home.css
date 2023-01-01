@@ -1,0 +1,56 @@
+.main-div{
+    height: 100vh;
+    background-color: grey;
+}
+.topbar{
+    /* height: 20%; */
+    height: 8vh;
+    padding-top: 8px;
+    display: flex;
+    padding-left: 1rem;
+}
+.top-bar-name{
+    color: white;
+    margin: 0;
+    margin-right: 20px;
+}
+.messenger{
+    display: flex;
+    height: 100vh;
+}
+
+.chatMenu{
+    margin: 0;
+    flex: 3.5;
+    
+    background-color: black;
+}
+
+.chatBox{
+    margin: 0;
+    flex: 6.5;
+    
+    /* background-color: black; */
+    border-left: white 1px solid;
+}
+.chatOnline{
+    margin: 0;
+    flex: 3;
+    
+}
+
+@media only screen and (max-width: 777px) {
+    .chatBox{
+        margin: 0;
+        flex: 5.5;
+        
+        /* background-color: black; */
+        border-left: white 1px solid;
+    }
+    .chatOnline{
+        margin: 0;
+        flex: 0;
+        display: none;
+        
+    }
+  }
