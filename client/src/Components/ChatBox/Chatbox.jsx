@@ -27,7 +27,7 @@ function Chatbox({own,message}) {
         {message.isFile ? <img className='chat-img' src={message.content} alt="" /> : <p className={msgtxtstyle}>{message.content}</p>}
       </div>}
       <div className={timetxtstyle}>
-        <p>{format(message.createdAt)}</p>
+        <p>{format(message.time)}</p>
       </div>
     </div>
   )

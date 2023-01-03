@@ -30,11 +30,14 @@ exports.AccessChat = async (req, res) => {
 exports.GetChats = async (req, res) => {
   let users = [];
   try {
-    let id = req.query.id;
+    let id = req.query.id;``
     let secondid = req.query.id;
-    chatSchema.find({ members: { $in: [id] } }).then((data) => {
-      res.status(200).json(data);
-    });
+    chatSchema
+      .find({ members: { $in: [id] } })
+      .sort({ updatedAt: -1 })
+      .then((data) => {
+        res.status(200).json(data);
+      });
   } catch (error) {}
 };
 
@@ -47,35 +50,44 @@ exports.sendMessage = async (req, res) => {
 
     if (req.body.image) {
       details = {
-        chat: chatid,
+        chatid: ObjectId(chatid),
         isFile: true,
         content: req.body.image,
         sender: req.body.id,
+        time: Date.now(),
       };
     } else {
       details = {
-        chat: chatid,
+        chatid: ObjectId(chatid),
+        isFile: false,
         content: message,
         sender: req.body.id,
+        time: Date.now(),
       };
     }
 
-    userMessage.create(details).then((data) => {
-      if (req.body.image) {
-        chatSchema
-          .updateOne({ _id: chatid }, { $set: { latestMessage: "Image" } })
-          .then((result) => {
-            console.log(result);
-          });
-      } else {
-        chatSchema
-          .updateOne({ _id: chatid }, { $set: { latestMessage: message } })
-          .then((result) => {
-            console.log(result);
-          });
-      }
-      res.status(200).json(data);
-    });
+    chatSchema
+      .updateOne({ _id: chatid }, { $push: { messages: [details] } })
+      .then((data) => {
+        res.status(200).json([details]);
+      });
+
+    // userMessage.create(details).then((data) => {
+    //   if (req.body.image) {
+    //     chatSchema
+    //       .updateOne({ _id: chatid }, { $set: { latestMessage: "Image" } })
+    //       .then((result) => {
+    //         console.log(result);
+    //       });
+    //   } else {
+    //     chatSchema
+    //       .updateOne({ _id: chatid }, { $set: { latestMessage: message } })
+    //       .then((result) => {
+    //         console.log(result);
+    //       });
+    //   }
+    //   res.status(200).json(data);
+    // });
   } catch (error) {}
 };
 
@@ -102,8 +114,9 @@ exports.getMessages = async (req, res) => {
   try {
     let id = req.query.id;
     console.log(id);
-    userMessage.find({ chat: id }).then((data) => {
-      res.status(200).json(data);
+    chatSchema.findOne({ _id: id }).then((data) => {
+      res.status(200).json(data.messages);
+      console.log(data.messages);
     });
   } catch (error) {}
 };
@@ -131,14 +144,15 @@ exports.GropMembers = async (req, res) => {
           foreignField: "_id",
           as: "USERS",
         },
-      },{
-        $project:{
-          _id:0,
-          user:"$USERS"
-        }
-      }
+      },
+      {
+        $project: {
+          _id: 0,
+          user: "$USERS",
+        },
+      },
     ])
     .then((data) => {
-      res.status(200).json(data)
+      res.status(200).json(data);
     });
 };

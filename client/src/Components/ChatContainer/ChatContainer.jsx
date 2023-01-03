@@ -44,10 +44,9 @@ function ChatContainer({ chat, receiveMessage }) {
     console.log(receiveMessage);
     if (
       messages.length != 0 &&
-      chat._id === receiveMessage.data.chat &&
-      userdata._id != receiveMessage.data.sender
+      chat._id === receiveMessage.data[0].chatid &&
+      userdata._id != receiveMessage.data[0].sender
     ) {
-      console.log(receiveMessage.data);
       setMessages([...messages, receiveMessage.data]);
       scrollRef.current.scrollIntoView();
     }
@@ -177,13 +176,13 @@ function ChatContainer({ chat, receiveMessage }) {
           ) : messages ? (
             messages.map((m) => {
               let own;
-              if (m.sender == userdata._id) {
+              if (m[0].sender == userdata._id) {
                 own = "own";
               }
               return (
                 <>
                   <div ref={scrollRef}>
-                    <Chatbox own={own} message={m} />
+                    <Chatbox own={own} message={m[0]} />
                   </div>
                 </>
               );

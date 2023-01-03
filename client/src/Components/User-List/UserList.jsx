@@ -35,6 +35,7 @@ function UserList(props) {
           </div>
           
           {/* <p>Latest Message : {props.details.latestMessage}</p> */}
+          <p>5:58 pm</p>
           {/* <hr /> */}
           </div>
         </div>
