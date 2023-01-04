@@ -58,7 +58,7 @@ function Home() {
             {loadsearch ? (
               ""
             ) : (
-              <button onClick={() => setloadsearch(!loadsearch)}>SERACH</button>
+              <button style={{color:"whitesmoke"}} className="search-button" onClick={() => setloadsearch(!loadsearch)}>Search Users <i style={{color:"white",marginLeft:'3px'} } class="fa-solid fa-magnifying-glass"></i></button>
             )}
             {loadsearch ? (
               <UserSearch

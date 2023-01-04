@@ -1,4 +1,8 @@
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Button,
   FormControl,
   FormLabel,
@@ -17,18 +21,23 @@ import React, { useState } from "react";
 import { createGroup, userSearchforGroup } from "../../API/ChatApiCalls";
 import UserBadge from "../UserBadge/UserBade";
 
-function CreateGroup({setcurentchat,currentuser, setgroupMembers, groupMembers }) {
+function CreateGroup({
+  setcurentchat,
+  currentuser,
+  setgroupMembers,
+  groupMembers,
+}) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [users, setUsers] = useState([]);
   const [groupmembers, setGroupmembers] = useState([]);
-  const [chatName,setChatName] = useState('')
+  const [chatName, setChatName] = useState("");
+  const [error, setError] = useState(null);
 
   const handleSearch = async (value) => {
     const { data } = await userSearchforGroup(currentuser, value);
     setUsers(data);
-    console.log(users);
   };
 
   const handleaddMember = (user) => {
@@ -36,7 +45,7 @@ function CreateGroup({setcurentchat,currentuser, setgroupMembers, groupMembers }
       console.log(user._id);
     } else {
       if (groupMembers.length == 0) {
-        setgroupMembers([currentuser,user._id]);
+        setgroupMembers([currentuser, user._id]);
         setGroupmembers([user]);
         console.log(groupMembers);
       } else {
@@ -53,12 +62,22 @@ function CreateGroup({setcurentchat,currentuser, setgroupMembers, groupMembers }
     console.log();
   };
 
-  const handleCreateGroup = async ()=>{
-    const members = JSON.stringify(groupMembers)
-    const {data} = await createGroup(currentuser,members,chatName)
-    setcurentchat(data)
-    onClose()
-  }
+  const handleCreateGroup = async () => {
+    const members = JSON.stringify(groupMembers);
+    createGroup(currentuser, members, chatName)
+      .then((data) => {
+        console.log(data.data);
+        setcurentchat(data.data);
+        onClose();
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+        setError(err.response.data);
+        setTimeout(() => {
+          setError(null);
+        }, 3000);
+      });
+  };
   return (
     <>
       <i onClick={onOpen} class="fa-solid fa-user-group"></i>
@@ -78,9 +97,8 @@ function CreateGroup({setcurentchat,currentuser, setgroupMembers, groupMembers }
               <FormLabel>CHAT NAME</FormLabel>
               <Input
                 onChange={(e) => {
-                  setChatName(e.target.value)
+                  setChatName(e.target.value);
                 }}
-                
                 placeholder="First name"
               />
               <FormLabel>Users</FormLabel>
@@ -92,7 +110,15 @@ function CreateGroup({setcurentchat,currentuser, setgroupMembers, groupMembers }
                 placeholder="First name"
               />
             </FormControl>
-
+            {error ? (
+              <Alert status="error">
+                <AlertIcon />
+                <AlertTitle>Create Group Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            ) : (
+              ""
+            )}
             {groupmembers
               ? groupmembers.map((user) => {
                   return (

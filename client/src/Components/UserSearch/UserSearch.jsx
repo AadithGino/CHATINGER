@@ -39,7 +39,7 @@ function UserSearch({setcurentchat,setloadsearch}) {
           handleSearch(e);
         }}
       >
-        Search
+        <i style={{color:"white"}} class="fa-solid fa-magnifying-glass"></i>
       </button>
       <div>
         {users

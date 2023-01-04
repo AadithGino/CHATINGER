@@ -18,7 +18,7 @@ import {
 function ChatContainer({ chat, receiveMessage }) {
   const socket = useRef();
   const userdata = useSelector((state) => state.loginReducer.userdata);
-  const recieverid = chat.members.find((id) => id !==userdata._id);
+  const recieverid = chat.members.find((id) => id !== userdata._id);
   const [messages, setMessages] = useState([]);
   const [userData, setUserData] = useState(null);
   const [messageloading, setmessageloading] = useState(false);
@@ -26,7 +26,7 @@ function ChatContainer({ chat, receiveMessage }) {
   const [file, setFile] = useState(false);
   const [socketsendMessage, setsocketsendMessage] = useState(null);
   const [imageuploadloading, setimageuploadloading] = useState(false);
-  const members = [];
+  const [members, setMembers] = useState();
   const scrollRef = useRef();
   const imageinputref = useRef(null);
   // FOR SENDING MESSAGE TO SOCKET.IO
@@ -99,16 +99,12 @@ function ChatContainer({ chat, receiveMessage }) {
     };
     fetchmessages();
     const fetchuserDetails = async () => {
-      if(chat.isGroupChat){
-        for(let i = 0 ; i < chat.members.length;i++){
-          let m = chat.members
-          const {data} = await findGroupMembers(m[i])
-         members.push(data)
-         console.log(members);
-        }
-      }else{
+      if (chat.isGroupChat) {
+        const { data } = await findGroupMembers(chat._id);
+        setMembers(data);
+      } else {
         const userDetails = await findUserDetails(recieverid);
-      setUserData(userDetails.data);
+        setUserData(userDetails.data);
       }
     };
     fetchuserDetails();
@@ -153,22 +149,17 @@ function ChatContainer({ chat, receiveMessage }) {
               : ""}
           </h3>
           <br />
-          {
-          chat.isGroupChat ?  members.length!=0? members.map((m)=>{
-            return(
-              <h2>sdf</h2>
-            )
-          }) :''  : ''
-        }
+
+          {chat.isGroupChat
+            ? members
+              ? members.map((m) => {
+                  console.log(m.user[0]);
+                  return <p>{m.user[0].Firstname}, </p>;
+                })
+              : ""
+            : ""}
         </div>
-        {/* {
-          chat.isGroupChat ? members.length!=0? members.map((m)=>{
-            return(
-              <h2>sdf</h2>
-            )
-          }) :'' : ''
-        } */}
-       
+
         <hr />
         <div className="chat-body">
           {messageloading ? (
@@ -217,7 +208,7 @@ function ChatContainer({ chat, receiveMessage }) {
             onChange={(e) => setMessage(e.target.value)}
           ></textarea>
           {message.length == 0 && !file ? (
-            ""
+            <button className="chatSubmitButton">Send</button>
           ) : imageuploadloading ? (
             <button className="chatSubmitButton">Image is uploading</button>
           ) : (

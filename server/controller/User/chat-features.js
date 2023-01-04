@@ -98,15 +98,21 @@ exports.createGroupChat = async (req, res) => {
     const groupAdmin = req.body.id;
     let members = JSON.parse(req.body.members);
     console.log(req.body.members);
-    const groupchat = {
-      chatName: req.body.chatName,
-      isGroupChat: true,
-      members,
-      groupAdmin,
-    };
-    chatSchema.create(groupchat).then((data) => {
-      res.status(201).json(data);
-    });
+    if(members.length < 2){
+      res.status(400).json("AT LEAST 2 MEMBERS SHOULD BE IN A GROUP")
+      console.log("AT LEAST 2 MEMBERS SHOULD BE IN A GROUP");
+    }else{
+      const groupchat = {
+        chatName: req.body.chatName,
+        isGroupChat: true,
+        members,
+        groupAdmin,
+      };
+      chatSchema.create(groupchat).then((data) => {
+        res.status(201).json(data);
+      });
+    }
+   
   } catch (error) {}
 };
 

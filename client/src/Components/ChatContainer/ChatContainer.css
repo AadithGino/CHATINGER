@@ -90,3 +90,8 @@ hr{
   .image-upload{
     display: none;
   }
+
+  .group-members{
+    display: flex;
+    flex-direction: column;
+  }
