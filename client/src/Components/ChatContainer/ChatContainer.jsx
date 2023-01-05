@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { io } from "socket.io-client";
 import ChatLoading from "../../ToolComponents/Loading/Loading";
 import Chatbox from "../ChatBox/Chatbox";
@@ -14,8 +14,11 @@ import {
   sendImage,
   sendMessage,
 } from "../../API/ChatApiCalls";
+import GroupInfo from "../GroupInfo/GroupInfo";
+import { userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
 
 function ChatContainer({ chat, receiveMessage }) {
+  const dispatch = useDispatch();
   const socket = useRef();
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const recieverid = chat.members.find((id) => id !== userdata._id);
@@ -27,6 +30,7 @@ function ChatContainer({ chat, receiveMessage }) {
   const [socketsendMessage, setsocketsendMessage] = useState(null);
   const [imageuploadloading, setimageuploadloading] = useState(false);
   const [members, setMembers] = useState();
+  // const [groupInfo,setGroupInfo] = useState(false)
   const scrollRef = useRef();
   const imageinputref = useRef(null);
   // FOR SENDING MESSAGE TO SOCKET.IO
@@ -48,6 +52,8 @@ function ChatContainer({ chat, receiveMessage }) {
       userdata._id != receiveMessage.data[0].sender
     ) {
       setMessages([...messages, receiveMessage.data]);
+      dispatch(userHome());
+
       scrollRef.current.scrollIntoView();
     }
   }, [receiveMessage]);
@@ -76,6 +82,7 @@ function ChatContainer({ chat, receiveMessage }) {
           setMessages([...messages, data]);
           setsocketsendMessage({ data, recieverid });
           setFile("");
+          dispatch(userHome());
           setimageuploadloading(false);
           setMessage("");
         });
@@ -83,6 +90,7 @@ function ChatContainer({ chat, receiveMessage }) {
       const { data } = await sendMessage(userdata._id, chat._id, message);
       setMessages([...messages, data]);
       setsocketsendMessage({ data, recieverid });
+      dispatch(userHome());
       setMessage("");
     }
   };
@@ -92,10 +100,9 @@ function ChatContainer({ chat, receiveMessage }) {
   useEffect(() => {
     setmessageloading(true);
     const fetchmessages = async () => {
-      const { data } = await fetchUserMessages(chat._id);
       setmessageloading(false);
-      console.log(data);
-      setMessages(data);
+
+      setMessages(chat.messages);
     };
     fetchmessages();
     const fetchuserDetails = async () => {
@@ -150,14 +157,26 @@ function ChatContainer({ chat, receiveMessage }) {
           </h3>
           <br />
 
-          {chat.isGroupChat
+          {/* {chat.isGroupChat
             ? members
               ? members.map((m) => {
                   console.log(m.user[0]);
                   return <p>{m.user[0].Firstname}, </p>;
                 })
               : ""
-            : ""}
+            : ""} */}
+          {chat.isGroupChat ? (
+            <div className="groupchat-info">
+              {" "}
+              <GroupInfo
+                members={members}
+                chat={chat}
+                currentuser={userdata._id}
+              />{" "}
+            </div>
+          ) : (
+            ""
+          )}
         </div>
 
         <hr />

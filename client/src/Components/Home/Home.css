@@ -4,6 +4,7 @@
 }
 .topbar{
     /* height: 20%; */
+    justify-content: space-between;
     height: 8vh;
     padding-top: 8px;
     display: flex;

@@ -1,7 +1,7 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import { currentChatReducer, findUserDetailsReducer, userHomeReducer } from "./Reducer/UserHomeReducer";
+import { curentChatReducer, findUserDetailsReducer, userHomeReducer } from "./Reducer/UserHomeReducer";
 import { userLoginReducer, userSignupReducer, verifyOTPReducer } from "./Reducer/UserLoginSignupReducer";
 const middleware = [thunk];
 
@@ -10,8 +10,9 @@ const reducer = combineReducers({
   findUser : findUserDetailsReducer,
   loginReducer:userLoginReducer,
   signUpReducer:userSignupReducer,
-  currentChatReducer:currentChatReducer,
-  otpReducer:verifyOTPReducer
+  otpReducer:verifyOTPReducer,
+  currentChatReducer:curentChatReducer,
+
 });
 
 let userinfo = JSON.parse(localStorage.getItem("chatingerUserInfo"));

@@ -11,6 +11,12 @@ router.post("/search",userhome.SearchUser)
 // find user details 
 router.get("/find-user",userhome.findUserDetails)
 
+//update name 
+router.route("/change-name").post(userhome.UpdateName)
+
+//update Profile Pic 
+router.route("/change-photo").post(userhome.updateProfilePic)
+
 //home 
 router.post("/",userhome.Home)
 

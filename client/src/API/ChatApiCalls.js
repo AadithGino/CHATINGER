@@ -16,3 +16,6 @@ export const userSearchforGroup = (id,search) => API.post('/search',{id,search},
 export const userCreateChat = (id,user) => API.post('/chat',{id,user},config)
 export const createGroup = (id,members,chatName)=>API.post('/chat/group-chat',{id,members,chatName},config)
 export const findGroupMembers =(id)=> API.get(`/chat/group-members?id=`+id)
+export const changeGroupName = (name,chatid) => API.post('/chat/group-change-name',{chatid,name},config)
+export const chanegUserName = (id,firstname,lastname) =>API.post("/change-name",{firstname,lastname,id})
+export const changeProfileImage = (id,image) => API.post("/change-photo",{id,image})

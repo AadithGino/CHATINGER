@@ -2,20 +2,22 @@ import React, { useRef } from "react";
 import "./Home.css";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
-import { userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
+import { setCurrentChat, userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
 import UserList from "../User-List/UserList";
 import { useState } from "react";
 import { io } from "socket.io-client";
 import ChatContainer from "../ChatContainer/ChatContainer";
 import UserSearch from "../UserSearch/UserSearch";
 import CreateGroup from "../CreateGroup/CreateGroup";
+import Profile from "../Profile/Profile";
+
 
 function Home() {
   const socket = useRef();
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const { loading, error, homedata } = useSelector((state) => state.userHome);
-  const chatData = useSelector((state) => state.currentChatReducer);
-  const { chatloading, chaterror, chatdata } = chatData;
+  const chatData = useSelector((state) => state.currentChatReducer.currentChat);
+  console.log(chatData);
   const [curentchat, setcurentchat] = useState("");
   const [receiveMessage, setRecieveMessage] = useState("");
   const [onlineUsers, setOnlineUsers] = useState([]);
@@ -47,7 +49,9 @@ function Home() {
     <div className="main-div">
       <div className="messenger">
         <div className="chatMenu">
+       
           <div className="topbar">
+          <Profile/>
             <h2 className="top-bar-name">
               {userdata ? userdata.firstname : ""}
               <CreateGroup  currentuser={userdata._id} setcurentchat={setcurentchat} setgroupMembers={setgroupMembers} groupMembers={groupMembers}/>
@@ -76,6 +80,7 @@ function Home() {
                         onClick={() => {
                           setcurentchat(m);
                           console.log(curentchat);
+                          dispatch(setCurrentChat(m))
                         }}
                       >
                         <UserList details={m} />
@@ -90,7 +95,7 @@ function Home() {
           <div className="chatBoxWraper">
             {curentchat ? (
               <ChatContainer
-                chat={curentchat}
+                chat={chatData}
                 receiveMessage={receiveMessage}
               />
             ) : (

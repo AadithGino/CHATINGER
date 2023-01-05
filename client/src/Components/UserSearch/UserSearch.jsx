@@ -1,10 +1,12 @@
 import React from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userCreateChat, userSearch } from "../../API/ChatApiCalls";
 import "./UserSearch.css";
+import { setCurrentChat, userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
 
 function UserSearch({setcurentchat,setloadsearch}) {
+  const dispatch = useDispatch()
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const [searchkeyword, setsearchkeyword] = useState("");
   const [users, setUsers] = useState([]);
@@ -21,7 +23,9 @@ function UserSearch({setcurentchat,setloadsearch}) {
     const {data}= await userCreateChat(userdata._id,id)
     console.log(data);
     setcurentchat(data)
+    dispatch(setCurrentChat(data))
     setloadsearch(false)
+    dispatch(userHome())
     
   }
   return (

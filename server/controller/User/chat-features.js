@@ -1,13 +1,8 @@
+const { ObjectId } = require("mongodb");
 const chatSchema = require("../../model/chatModel");
 const userSchema = require("../../model/usermodel");
-const userMessage = require("../../model/MessageModel");
-const { db } = require("../../model/chatModel");
-const { ObjectId } = require("mongodb");
 
-let chatid;
-let details;
-exports.AccessChat = async (req, res) => {
-  const { senderId } = req.body;
+exports.CreateChat = async (req, res) => {
   try {
     let userid = req.body.id;
     let user2 = req.body.user;
@@ -30,7 +25,8 @@ exports.AccessChat = async (req, res) => {
 exports.GetChats = async (req, res) => {
   let users = [];
   try {
-    let id = req.query.id;``
+    let id = req.query.id;
+    ``;
     let secondid = req.query.id;
     chatSchema
       .find({ members: { $in: [id] } })
@@ -65,54 +61,16 @@ exports.sendMessage = async (req, res) => {
         time: Date.now(),
       };
     }
-
     chatSchema
       .updateOne({ _id: chatid }, { $push: { messages: [details] } })
       .then((data) => {
+        console.log(details);
         res.status(200).json([details]);
+        console.log(details);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-
-    // userMessage.create(details).then((data) => {
-    //   if (req.body.image) {
-    //     chatSchema
-    //       .updateOne({ _id: chatid }, { $set: { latestMessage: "Image" } })
-    //       .then((result) => {
-    //         console.log(result);
-    //       });
-    //   } else {
-    //     chatSchema
-    //       .updateOne({ _id: chatid }, { $set: { latestMessage: message } })
-    //       .then((result) => {
-    //         console.log(result);
-    //       });
-    //   }
-    //   res.status(200).json(data);
-    // });
-  } catch (error) {}
-};
-
-// creating a group chat
-
-exports.createGroupChat = async (req, res) => {
-  try {
-    const groupAdmin = req.body.id;
-    let members = JSON.parse(req.body.members);
-    console.log(req.body.members);
-    if(members.length < 2){
-      res.status(400).json("AT LEAST 2 MEMBERS SHOULD BE IN A GROUP")
-      console.log("AT LEAST 2 MEMBERS SHOULD BE IN A GROUP");
-    }else{
-      const groupchat = {
-        chatName: req.body.chatName,
-        isGroupChat: true,
-        members,
-        groupAdmin,
-      };
-      chatSchema.create(groupchat).then((data) => {
-        res.status(201).json(data);
-      });
-    }
-   
   } catch (error) {}
 };
 
@@ -125,40 +83,4 @@ exports.getMessages = async (req, res) => {
       console.log(data.messages);
     });
   } catch (error) {}
-};
-
-exports.GropMembers = async (req, res) => {
-  console.log("THIS IS THE GROUP DATA FETCHING ");
-  chatSchema
-    .aggregate([
-      { $match: { _id: ObjectId(req.query.id) } },
-      { $unwind: "$members" },
-      {
-        $project: {
-          member: "$members",
-        },
-      },
-      {
-        $project: {
-          user: "$member",
-        },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "user",
-          foreignField: "_id",
-          as: "USERS",
-        },
-      },
-      {
-        $project: {
-          _id: 0,
-          user: "$USERS",
-        },
-      },
-    ])
-    .then((data) => {
-      res.status(200).json(data);
-    });
 };
