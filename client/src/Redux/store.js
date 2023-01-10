@@ -1,7 +1,7 @@
 import { combineReducers, createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
-import { curentChatReducer, findUserDetailsReducer, userHomeReducer } from "./Reducer/UserHomeReducer";
+import { curentChatReducer, findUserDetailsReducer, notificationReducer, userHomeReducer } from "./Reducer/UserHomeReducer";
 import { userLoginReducer, userSignupReducer, verifyOTPReducer } from "./Reducer/UserLoginSignupReducer";
 const middleware = [thunk];
 
@@ -12,6 +12,7 @@ const reducer = combineReducers({
   signUpReducer:userSignupReducer,
   otpReducer:verifyOTPReducer,
   currentChatReducer:curentChatReducer,
+  notificationReducer:notificationReducer
 
 });
 

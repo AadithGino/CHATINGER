@@ -14,7 +14,7 @@ router.get("/get-chats", chatController.GetChats);
 // router.route("/get-chats").get(protect,chatController.GetChats)
 
 // get messages
-// router.get("/get-messages", chatController.getMessages);
+router.get("/get-messages", chatController.getMessages);
 
 //members of group chat
 router.get("/group-members", groupController.GropMembers);

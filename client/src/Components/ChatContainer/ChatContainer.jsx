@@ -16,6 +16,7 @@ import {
 } from "../../API/ChatApiCalls";
 import GroupInfo from "../GroupInfo/GroupInfo";
 import { userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
+import { Avatar, WrapItem } from "@chakra-ui/react";
 
 function ChatContainer({ chat, receiveMessage }) {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ function ChatContainer({ chat, receiveMessage }) {
   const [socketsendMessage, setsocketsendMessage] = useState(null);
   const [imageuploadloading, setimageuploadloading] = useState(false);
   const [members, setMembers] = useState();
+
   // const [groupInfo,setGroupInfo] = useState(false)
   const scrollRef = useRef();
   const imageinputref = useRef(null);
@@ -100,9 +102,10 @@ function ChatContainer({ chat, receiveMessage }) {
   useEffect(() => {
     setmessageloading(true);
     const fetchmessages = async () => {
-      setmessageloading(false);
-
-      setMessages(chat.messages);
+      fetchUserMessages(chat._id).then((data) => {
+        setMessages(data.data);
+        setmessageloading(false);
+      });
     };
     fetchmessages();
     const fetchuserDetails = async () => {
@@ -143,11 +146,17 @@ function ChatContainer({ chat, receiveMessage }) {
     <div>
       <div className="ChatBox-container">
         <div className="chat-header">
-          <img
-            className="profile-image"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvXOdUM5rLXW_aLA2ZRQ_Y79n899uSS3Em5zSiyLBPcA&s"
-            alt=""
+          <Avatar
+            name={
+              chat.isGroupChat
+                ? chat.chatName
+                : userData
+                ? userData.fullname
+                : ""
+            }
+            src={chat.isGroupChat ? chat.photo : userData ? userData.photo : ""}
           />
+
           <h3 className="user-name">
             {chat.isGroupChat
               ? chat.chatName
@@ -157,14 +166,6 @@ function ChatContainer({ chat, receiveMessage }) {
           </h3>
           <br />
 
-          {/* {chat.isGroupChat
-            ? members
-              ? members.map((m) => {
-                  console.log(m.user[0]);
-                  return <p>{m.user[0].Firstname}, </p>;
-                })
-              : ""
-            : ""} */}
           {chat.isGroupChat ? (
             <div className="groupchat-info">
               {" "}
@@ -185,14 +186,14 @@ function ChatContainer({ chat, receiveMessage }) {
             <ChatLoading />
           ) : messages ? (
             messages.map((m) => {
-              let own;
+              let own = false;
               if (m[0].sender == userdata._id) {
                 own = "own";
               }
               return (
                 <>
                   <div ref={scrollRef}>
-                    <Chatbox own={own} message={m[0]} />
+                    <Chatbox chat={chat} groupMembers={members} own={own} otheruser={userData} message={m[0] } />
                   </div>
                 </>
               );

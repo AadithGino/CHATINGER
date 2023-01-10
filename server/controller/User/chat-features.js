@@ -26,6 +26,7 @@ exports.GetChats = async (req, res) => {
   let users = [];
   try {
     let id = req.query.id;
+    console.log(id);
     ``;
     let secondid = req.query.id;
     chatSchema

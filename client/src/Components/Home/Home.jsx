@@ -10,6 +10,7 @@ import ChatContainer from "../ChatContainer/ChatContainer";
 import UserSearch from "../UserSearch/UserSearch";
 import CreateGroup from "../CreateGroup/CreateGroup";
 import Profile from "../Profile/Profile";
+import { notificationReducer } from "../../Redux/Reducer/UserHomeReducer";
 
 
 function Home() {
@@ -17,6 +18,8 @@ function Home() {
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const { loading, error, homedata } = useSelector((state) => state.userHome);
   const chatData = useSelector((state) => state.currentChatReducer.currentChat);
+  // const notification = useSelector((state)=>state.notificationReducer)
+  // console.log(notification);
   console.log(chatData);
   const [curentchat, setcurentchat] = useState("");
   const [receiveMessage, setRecieveMessage] = useState("");
@@ -37,12 +40,20 @@ function Home() {
   useEffect(() => {
     socket.current.on("receive-message", (data) => {
       setRecieveMessage(data);
+      
+      console.log("..................................");
+      console.log(data.data[0].chatid+'THIS IS THE RECIEVE CHAT ID');
+      console.log(chatData+">>>>>>>>>>>>");   
+      console.log("THIS IS THE CURRENT CHAT ID");
+      console.log("---------------------------------------------------");
+      
     });
   }, []);
 
   useEffect(() => {
-    dispatch(userHome(userdata._id));
-  }, [userdata]);
+
+    dispatch(userHome())
+  }, []);
 
   
   return (

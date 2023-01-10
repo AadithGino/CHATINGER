@@ -41,7 +41,6 @@ exports.findUserDetails = async (req, res) => {
 exports.UpdateName = async (req, res) => {
   let id = req.body.id;
   const firstname = req.body.firstname;
-  const lastname = req.body.lastname;
   const fullname = firstname + " " + lastname;
 
   try {

@@ -13,30 +13,53 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { useDispatch } from 'react-redux'
-import { changeGroupName } from "../../API/ChatApiCalls";
-import { setCurrentChat, userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
+import { useDispatch } from "react-redux";
+import { changeGroupName, removeUserFromGroup } from "../../API/ChatApiCalls";
+import {
+  setCurrentChat,
+  userHome,
+} from "../../Redux/Actions/UserActions/UserHomeAction";
+import UserBade from "../UserBadge/UserBade";
 const GroupInfo = ({ members, chat, currentuser }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [editName, setEditName] = useState(false);
-  const [name,setName] =useState('')
+  const [nameupdated, setnameupdated] = useState(false);
+  const [name, setName] = useState("");
   console.log(chat);
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
-  const handleChangeName = ()=>{
-    changeGroupName(name,chat._id).then((data)=>{
-      console.log(data);
-      dispatch(setCurrentChat(data.data))
-      dispatch(userHome())
-      
-    }).catch((err)=>{
-      console.log(err);
-    })
-  }
+  const handleChangeName = () => {
+    changeGroupName(name, chat._id)
+      .then((data) => {
+        setnameupdated(true);
+        dispatch(setCurrentChat(data.data));
+        dispatch(userHome());
+        setEditName(false);
+        setTimeout(() => {
+          setnameupdated(false);
+        }, 3000);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const removeUser = (id) => {
+    removeUserFromGroup(id, chat._id)
+      .then((data) => {
+        console.log(data);
+        dispatch(setCurrentChat(data.data));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <i onClick={onOpen} class="fa-solid fa-circle-info"></i>
@@ -51,6 +74,14 @@ const GroupInfo = ({ members, chat, currentuser }) => {
         <ModalContent>
           <ModalHeader> Group Info </ModalHeader>
           <ModalCloseButton />
+          {nameupdated ? (
+            <Alert status="success">
+              <AlertIcon />
+              Group Name Updated
+            </Alert>
+          ) : (
+            ""
+          )}
           <ModalBody pb={6}>
             <FormControl>
               <FormLabel>
@@ -65,23 +96,47 @@ const GroupInfo = ({ members, chat, currentuser }) => {
                 )}{" "}
               </FormLabel>
               {editName ? (
-                <Input onChange={(e)=>{setName(e.target.value)}} ref={initialRef} placeholder="New Group Name..." />
+                <Input
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                  ref={initialRef}
+                  placeholder="New Group Name..."
+                />
               ) : (
                 ""
               )}
             </FormControl>
 
-            {/* <FormControl mt={4}>
-              <FormLabel>Last name</FormLabel>
-              <Input placeholder="Last name" />
-            </FormControl> */}
+            <h2>MEMBERS</h2>
+            {chat.isGroupChat
+              ? members
+                ? members.map((m) => {
+                    console.log(m.user[0]);
+                    if (m.user[0] !== currentuser) {
+                      return (
+                        <>
+                          <span
+                            onClick={() => {
+                              removeUser(m.user[0]._id);
+                            }}
+                          >
+                            {" "}
+                            <UserBade user={m.user[0]} /> <br />
+                          </span>
+                        </>
+                      );
+                    }
+                  })
+                : ""
+              : ""}
           </ModalBody>
 
           <ModalFooter>
             {chat.groupAdmin === currentuser ? (
-              <Button onClick={handleChangeName} colorScheme="blue" mr={3}>
-                Save
-              </Button>
+             editName? <Button onClick={handleChangeName} colorScheme="blue" mr={3}>
+             Save
+           </Button> : ''
             ) : (
               ""
             )}

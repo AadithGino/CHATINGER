@@ -13,8 +13,10 @@ const baseUrl = "http://localhost:5000";
 
 export const userHome = () => async (dispatch) => {
   try {
-    console.log("USER HOME DISPATCHED");
+    // console.log("USER HOME DISPATCHED"+userinfo._id);
+
     let userinfo = JSON.parse(localStorage.getItem("chatingerUserInfo"));
+    console.log(userinfo._id);
     dispatch({ type: USER_HOME_REQUEST });
     const { data } = await axios.get(
       "http://localhost:5000/chat/get-chats?id=" + userinfo._id

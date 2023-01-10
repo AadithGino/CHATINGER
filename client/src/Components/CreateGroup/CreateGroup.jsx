@@ -16,9 +16,12 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  CloseButton
 } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { createGroup, userSearchforGroup } from "../../API/ChatApiCalls";
+import { setCurrentChat, userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
 import UserBadge from "../UserBadge/UserBade";
 
 function CreateGroup({
@@ -27,6 +30,7 @@ function CreateGroup({
   setgroupMembers,
   groupMembers,
 }) {
+  const dispatch = useDispatch()
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
@@ -68,6 +72,8 @@ function CreateGroup({
       .then((data) => {
         console.log(data.data);
         setcurentchat(data.data);
+        dispatch(setCurrentChat(data.data))
+        dispatch(userHome())
         onClose();
       })
       .catch((err) => {
@@ -127,7 +133,7 @@ function CreateGroup({
                         handleRemove(user);
                       }}
                     >
-                      <UserBadge handleRemove={handleRemove} user={user} />
+                      <UserBadge handleRemove={handleRemove} user={user} /> 
                     </span>
                   );
                 })

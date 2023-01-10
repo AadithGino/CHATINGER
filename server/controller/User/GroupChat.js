@@ -68,12 +68,20 @@ exports.GropMembers = async (req, res) => {
 exports.RemoveGroupMembers = async (req, res) => {
   try {
     let chatid = req.body.chatid;
-    let userid = req.body.userid;
+    let userid = req.body.id;
     console.log(userid);
-    chatSchema.updateOne({_id:chatid},{$pull:{members:ObjectId(userid)}}).then((data)=>{
-        console.log(data);
-        res.status(200).json("USER DELETED SUCCESSFULLY")
-    })
+   chatSchema.findOne({_id:chatid}).then((data)=>{
+    console.log(data.groupAdmin+"THIS IS THE ADMIB");
+    if(data.groupAdmin===userid){
+      res.status(400).json("Cannot Remove The Admin")
+    }else{
+      chatSchema.updateOne({_id:chatid},{$pull:{members:ObjectId(userid)}}).then((data)=>{
+        chatSchema.findOne({_id:chatid}).then((data)=>{
+          res.status(200).json(data)
+         })
+      })
+    }
+   })
 
   } catch (error) {
 

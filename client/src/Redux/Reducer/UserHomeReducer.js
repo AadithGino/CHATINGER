@@ -6,7 +6,9 @@ import {
   FIND_USER_REQUEST,
   FIND_USER_SUCCESS,
   SET_CURRENT_CHAT,
+  SET_NOTIFICATION,
   UPDATE_CURRENT_CHAT,
+  UPDATE_NOTIFICATION,
   USER_HOME_FAIL,
   USER_HOME_REQUEST,
   USER_HOME_SUCCESS,
@@ -51,3 +53,15 @@ export const curentChatReducer = (state = 'hiiii', action) => {
       return state;
   }
 };
+
+
+export const notificationReducer = (state =[],action)=>{
+  switch (action.type) {
+    case SET_NOTIFICATION:
+      return({notifications:action.payload})
+  
+    default:
+      return state;
+  }
+  
+}

@@ -4,17 +4,16 @@ import {
   CURRENT_CHAT_FAIL,
   CURRENT_CHAT_REQUEST,
   CURRENT_CHAT_SUCCESS,
+  SET_NOTIFICATION,
   USER_SEND_MESSAGE_REQUEST,
   USER_SEND_MESSAGE_SUCCESS,
 } from "../../Constants/userConstants";
 const userdata = JSON.parse(localStorage.getItem("chatingerUserInfo"));
 
-
-
 // export const currentChatAction = (id) => async (dispatch) => {
 //   try {
 //     dispatch({ type: CURRENT_CHAT_REQUEST });
-    
+
 //     const { data } = await axios.get(
 //       "http://localhost:5000/chat/get-messages?id=" + id
 //     );
@@ -30,6 +29,10 @@ const userdata = JSON.parse(localStorage.getItem("chatingerUserInfo"));
 //     });
 //   }
 // };
+
+export const notificationAction = (data) => async (dispatch) => {
+  dispatch({ type: SET_NOTIFICATION, payload: data });
+};
 
 // export const sendMessageAction = (chatid,content) =>async(dispatch)=>{
 //   console.log(chatid+"THIS IS THE CHAR ID");
