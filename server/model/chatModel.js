@@ -5,7 +5,7 @@ const chatSChema = mongoose.Schema(
     chatName: { type: String, trim: true },
     isGroupChat: { type: Boolean, default: false },
     members :[{type:mongoose.Schema.Types.ObjectId}],
-    latestMessage: {type:String},
+    latestMessage: {},
     messages : [],
     groupAdmin: {
       type: mongoose.Schema.Types.ObjectId,

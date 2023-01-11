@@ -73,7 +73,7 @@ function Home() {
             {loadsearch ? (
               ""
             ) : (
-              <button style={{color:"whitesmoke"}} className="search-button" onClick={() => setloadsearch(!loadsearch)}>Search Users <i style={{color:"white",marginLeft:'3px'} } class="fa-solid fa-magnifying-glass"></i></button>
+              <button style={{color:"black"}} className="search-button" onClick={() => setloadsearch(!loadsearch)}>Search Users <i style={{color:"black",marginLeft:'3px'} } class="fa-solid fa-magnifying-glass"></i></button>
             )}
             {loadsearch ? (
               <UserSearch
@@ -110,7 +110,10 @@ function Home() {
                 receiveMessage={receiveMessage}
               />
             ) : (
-              ""
+              <div style={{width:"100%",alignItems:"center", justifyContent:"center"}}>
+                <img style={{marginLeft:"15%"}} src="https://res.cloudinary.com/dhajqatgt/image/upload/v1672202300/finalchatinerglgoo_jdhu4x.png" alt="" />
+                <p>Chat Online With Your Friends,Group Chat And All Other Features....</p>
+              </div>
             )}
           </div>
         </div>

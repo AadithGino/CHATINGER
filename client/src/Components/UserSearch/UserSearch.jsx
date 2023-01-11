@@ -43,24 +43,24 @@ function UserSearch({setcurentchat,setloadsearch}) {
           handleSearch(e);
         }}
       >
-        <i style={{color:"white"}} class="fa-solid fa-magnifying-glass"></i>
+        <i style={{color:"black"}} class="fa-solid fa-magnifying-glass"></i>
       </button>
       <div>
         {users
-          ? users.map((user) => {
-              return (
-                <div onClick={()=>{handleCreateChat(user._id)}} className="user-list">
-                  <div class="avatar">
-                    <img
-                      className="user-img"
-                      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                      alt=""
-                    />
-                  </div>
-                  <span className="user-name">{user ? user.fullname : ""}</span>
+          ? users.length < 1 ? <h2>No Users Found</h2> : users.map((user) => {
+            return (
+              <div onClick={()=>{handleCreateChat(user._id)}} className="user-list-search">
+                <div class="avatar">
+                  <img
+                    className="user-img"
+                    src={user.photo?user.photo:"https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"}
+                    alt=""
+                  />
                 </div>
-              );
-            })
+                <span className="user-name">{user ? user.fullname : ""}</span>
+              </div>
+            );
+          })
           : ""}
       </div>
     </div>

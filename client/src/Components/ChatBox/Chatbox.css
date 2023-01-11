@@ -20,9 +20,10 @@
   .messageText{
       padding: 10px;
       border-radius: 20px;
-      background-color: #1877f2;
-      color: white;
+      background-color: #ffff;
+      color: black;
       max-width: 300px;
+      min-width: 100px;
   }
   
   .messageBottom{
@@ -35,12 +36,13 @@
   }
   
   .message.own .messageText{
-      background-color: rgb(245, 241, 241);
+      background-color: rgb(217, 253, 211);
       color: black;
   }
 
 .message-time{
     font-size: 9px;
+    align-items: flex-end;
 }
 .chat-img{
     width: 300px;

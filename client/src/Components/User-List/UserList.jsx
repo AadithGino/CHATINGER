@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { findUserDetails } from "../../API/ChatApiCalls";
 import { findUserDetailsAction } from "../../Redux/Actions/UserActions/UserHomeAction";
-import TopBar from "../TopBar/TopBar";
+import { format } from "timeago.js";
 import { WrapItem, Avatar } from "@chakra-ui/react";
 import "./UserList.css";
 function UserList(props) {
@@ -25,12 +25,11 @@ function UserList(props) {
 
   return (
     <>
-      {/* <TopBar /> */}
       <div className="home-page">
         <div>
-          <div>
+          <div className="user-list-main">
             <div className="user-list">
-              <WrapItem style={{marginRight:"10px"}}>
+              <WrapItem style={{ marginRight: "10px" }}>
                 <Avatar
                   name={
                     props.details.isGroupChat
@@ -56,10 +55,13 @@ function UserList(props) {
                   : ""}
               </span>
             </div>
-
-            {/* <p>Latest Message : {props.details.latestMessage}</p> */}
-            {/* <p>5:58 pm</p> */}
-            {/* <hr /> */}
+            {
+            props.details?.latestMessage?.sender === userdata._id? <p className="latest-message-userlist">You : {props.details?.latestMessage?.content}</p> : <p className="latest-message-userlist"> {props.details?.latestMessage?.content}</p>
+            }
+            <p className="latest-message-time-userlist">
+              {format(props.details.updatedAt)}
+            </p>
+            <hr className="separating-line" />
           </div>
         </div>
       </div>

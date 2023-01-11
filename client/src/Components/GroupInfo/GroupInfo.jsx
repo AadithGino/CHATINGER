@@ -62,7 +62,7 @@ const GroupInfo = ({ members, chat, currentuser }) => {
   };
   return (
     <>
-      <i onClick={onOpen} class="fa-solid fa-circle-info"></i>
+      <i style={{color:"black"}} onClick={onOpen} class="fa-solid fa-circle-info"></i>
 
       <Modal
         initialFocusRef={initialRef}
@@ -116,14 +116,21 @@ const GroupInfo = ({ members, chat, currentuser }) => {
                     if (m.user[0] !== currentuser) {
                       return (
                         <>
-                          <span
-                            onClick={() => {
-                              removeUser(m.user[0]._id);
-                            }}
-                          >
-                            {" "}
-                            <UserBade user={m.user[0]} /> <br />
-                          </span>
+                          {chat.groupAdmin === currentuser ? (
+                            <span
+                              onClick={() => {
+                                removeUser(m.user[0]._id);
+                              }}
+                            >
+                              {" "}
+                              <UserBade user={m.user[0]} /> <br />
+                            </span>
+                          ) : (
+                            <span>
+                              {" "}
+                              <UserBade user={m.user[0]} /> <br />
+                            </span>
+                          )}
                         </>
                       );
                     }
@@ -134,9 +141,13 @@ const GroupInfo = ({ members, chat, currentuser }) => {
 
           <ModalFooter>
             {chat.groupAdmin === currentuser ? (
-             editName? <Button onClick={handleChangeName} colorScheme="blue" mr={3}>
-             Save
-           </Button> : ''
+              editName ? (
+                <Button onClick={handleChangeName} colorScheme="blue" mr={3}>
+                  Save
+                </Button>
+              ) : (
+                ""
+              )
             ) : (
               ""
             )}

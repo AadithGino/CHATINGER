@@ -147,6 +147,8 @@ function ChatContainer({ chat, receiveMessage }) {
       <div className="ChatBox-container">
         <div className="chat-header">
           <Avatar
+            style={{ margin: "0" }}
+            size={"md"}
             name={
               chat.isGroupChat
                 ? chat.chatName
@@ -193,7 +195,13 @@ function ChatContainer({ chat, receiveMessage }) {
               return (
                 <>
                   <div ref={scrollRef}>
-                    <Chatbox chat={chat} groupMembers={members} own={own} otheruser={userData} message={m[0] } />
+                    <Chatbox
+                      chat={chat}
+                      groupMembers={members}
+                      own={own}
+                      otheruser={userData}
+                      message={m[0]}
+                    />
                   </div>
                 </>
               );
@@ -228,9 +236,13 @@ function ChatContainer({ chat, receiveMessage }) {
             onChange={(e) => setMessage(e.target.value)}
           ></textarea>
           {message.length == 0 && !file ? (
-            <button className="chatSubmitButton">Send</button>
+            <button disabled className="chatSubmitButton" type="button">
+              Send
+            </button>
           ) : imageuploadloading ? (
-            <button className="chatSubmitButton">Image is uploading</button>
+            <button d className="chatSubmitButton">
+              Image is uploading
+            </button>
           ) : (
             <button
               onClick={(e) => {

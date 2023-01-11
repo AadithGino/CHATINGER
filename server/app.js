@@ -14,6 +14,7 @@ dotenv.config();
 const app = express();
 
 const cors = require("cors");
+const { resolve } = require("path");
 const corsOptions = {
   origin: "http://localhost:3000",
   credentials: true, //access-control-allow-credentials:true
@@ -49,11 +50,18 @@ app.use(function (err, req, res, next) {
   // res.render('error');
 });
 
-
-
-
 app.listen(5000, () => {
   console.log(5000);
 });
+
+
+var a = 10;
+function hey(){
+   let a =100;
+  console.log(a);
+}
+hey()
+console.log(a);
+
 
 module.exports = app;

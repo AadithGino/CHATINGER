@@ -19,8 +19,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { chanegUserName, changeProfileImage } from "../../API/ChatApiCalls";
 import { updateUserData } from "../../Redux/Actions/UserActions/UserLoginSignupActions";
+import Alert from "../Alert/Alert";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function Profile() {
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const initialRef = React.useRef(null);
@@ -28,7 +31,7 @@ function Profile() {
   const [editName, setEditName] = useState(false);
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
-  const [imageLoading,setImageLoading]=useState(false);
+  const [imageLoading, setImageLoading] = useState(false);
   const [image, setImage] = useState();
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const fileRef = useRef();
@@ -42,7 +45,7 @@ function Profile() {
   console.log(userdata);
 
   const changeProfilePic = (e) => {
-    setImageLoading(true)
+    setImageLoading(true);
     console.log(image);
     const data = new FormData();
     data.append("file", image);
@@ -54,30 +57,34 @@ function Profile() {
     })
       .then((res) => res.json())
       .then((data) => {
-        
         changeProfileImage(userdata._id, data.url).then((result) => {
           console.log(result.data);
           dispatch(updateUserData(result.data));
-          setImageLoading(false)
+          setImageLoading(false);
         });
       });
   };
 
+  const logout = () => {
+    localStorage.removeItem("chatingerUserInfo");
+    navigate("/login");
+  };
+
   return (
     <>
-      {
-        imageLoading ? <h2>Loading...</h2> : <WrapItem>
-       
-        <Avatar
-       onClick={() => {
-         onOpen();
-       }}
-       name={userdata.firstname}
-       src={userdata.photo}
-     />
-      
-     </WrapItem>
-      }
+      {imageLoading ? (
+        <h2>Loading...</h2>
+      ) : (
+        <WrapItem>
+          <Avatar
+            onClick={() => {
+              onOpen();
+            }}
+            name={userdata.firstname}
+            src={userdata.photo}
+          />
+        </WrapItem>
+      )}
 
       <Modal
         initialFocusRef={initialRef}
@@ -103,9 +110,10 @@ function Profile() {
 
             <Input
               onChange={(e) => {
-                setImage(e.target.files[0])
-                console.log(image);
-                changeProfilePic();
+                console.log(e.target.files[0]);
+                // setImage(e.target.files[0])
+                // console.log(image);
+                changeProfilePic(e.target.files[0]);
               }}
               ref={fileRef}
               style={{ display: "none" }}
@@ -143,9 +151,19 @@ function Profile() {
           </ModalBody>
 
           <ModalFooter>
-            <Button onClick={() => changeName()} colorScheme="blue" mr={3}>
-              Save
-            </Button>
+            {editName ? (
+              <Button onClick={() => changeName()} colorScheme="blue" mr={3}>
+                Save
+              </Button>
+            ) : (
+              ""
+            )}
+
+            <Alert
+              message={"Are You Sure You Want To Logout"}
+              action={"Logout"}
+              functiontobedone={logout}
+            />
           </ModalFooter>
         </ModalContent>
       </Modal>

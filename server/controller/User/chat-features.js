@@ -40,7 +40,6 @@ exports.GetChats = async (req, res) => {
 
 exports.sendMessage = async (req, res) => {
   let chatid = req.body.chatid;
-  const message = req.body.message;
   try {
     let message = req.body.message;
     let details;
@@ -63,7 +62,7 @@ exports.sendMessage = async (req, res) => {
       };
     }
     chatSchema
-      .updateOne({ _id: chatid }, { $push: { messages: [details] } })
+      .updateOne({ _id: chatid }, { $push: { messages: [details] },$set:{latestMessage:details} })
       .then((data) => {
         console.log(details);
         res.status(200).json([details]);
