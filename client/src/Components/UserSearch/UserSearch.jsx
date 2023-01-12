@@ -22,7 +22,7 @@ function UserSearch({setcurentchat,setloadsearch}) {
   const handleCreateChat = async(id) =>{
     const {data}= await userCreateChat(userdata._id,id)
     console.log(data);
-    setcurentchat(data)
+    // setcurentchat(data)
     dispatch(setCurrentChat(data))
     setloadsearch(false)
     dispatch(userHome())

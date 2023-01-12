@@ -20,5 +20,5 @@ export const changeGroupName = (name,chatid) => API.post('/chat/group-change-nam
 export const chanegUserName = (id,firstname,lastname) =>API.post("/change-name",{firstname,lastname,id})
 export const changeProfileImage = (id,image) => API.post("/change-photo",{id,image})
 export const removeUserFromGroup = (id,chatid) => API.post("/chat/group-remove",{id,chatid},config)
-// export const getStatusOfUser = () =>API.post("/status/get-status")
 export const getStatus = (id) => API.post('/status/get-status')
+export const uploadStatus = (id,image) =>API.post("/status/status-upload",{id,image},config)

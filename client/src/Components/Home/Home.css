@@ -9,12 +9,12 @@
     padding-top: 8px;
     display: flex;
     padding-left: 1rem;
+    position: sticky;
 }
 .top-bar-name{
     color: black;
     margin: 0;
     margin-right: 20px;
-    margin-top: 15px;
 }
 .messenger{
     display: flex;
@@ -49,28 +49,28 @@
 
 .chatBox{
     margin: 0;
-    flex: 6.5;
+    flex: 9.5;
     
     /* background-color: black; */
     border-left: white 1px solid;
 }
-.chatOnline{
+/* .chatOnline{
     margin: 0;
     flex: 3;
     border-left: 1px solid black;
-}
+} */
 
-@media only screen and (max-width: 777px) {
+@media only screen and (max-width: 690px) {
     .chatBox{
         margin: 0;
-        flex: 5.5;
+        /* flex: 13; */
         
         /* background-color: black; */
         border-left: white 1px solid;
     }
-    .chatOnline{
+    .chatMenu{
         margin: 0;
-        flex: 0;
+        flex: 13;
         display: none;
         
     }

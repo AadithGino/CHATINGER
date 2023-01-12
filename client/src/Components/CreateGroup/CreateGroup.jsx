@@ -16,21 +16,19 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
-  CloseButton
+  CloseButton,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createGroup, userSearchforGroup } from "../../API/ChatApiCalls";
-import { setCurrentChat, userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
+import {
+  setCurrentChat,
+  userHome,
+} from "../../Redux/Actions/UserActions/UserHomeAction";
 import UserBadge from "../UserBadge/UserBade";
 
-function CreateGroup({
-  setcurentchat,
-  currentuser,
-  setgroupMembers,
-  groupMembers,
-}) {
-  const dispatch = useDispatch()
+function CreateGroup({}) {
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
@@ -38,7 +36,8 @@ function CreateGroup({
   const [groupmembers, setGroupmembers] = useState([]);
   const [chatName, setChatName] = useState("");
   const [error, setError] = useState(null);
-
+  const [groupMembers, setgroupMembers] = useState([]);
+  const currentuser = useSelector((state) => state.loginReducer.userdata._id);
   const handleSearch = async (value) => {
     const { data } = await userSearchforGroup(currentuser, value);
     setUsers(data);
@@ -70,10 +69,8 @@ function CreateGroup({
     const members = JSON.stringify(groupMembers);
     createGroup(currentuser, members, chatName)
       .then((data) => {
-        console.log(data.data);
-        setcurentchat(data.data);
-        dispatch(setCurrentChat(data.data))
-        dispatch(userHome())
+        dispatch(setCurrentChat(data.data));
+        dispatch(userHome());
         onClose();
       })
       .catch((err) => {
@@ -86,7 +83,11 @@ function CreateGroup({
   };
   return (
     <>
-      <i style={{marginTop:"20px"}} onClick={onOpen} class="fa-solid fa-user-group"></i>
+      <i
+        style={{ marginTop: "20px" }}
+        onClick={onOpen}
+        class="fa-solid fa-user-group"
+      ></i>
 
       <Modal
         initialFocusRef={initialRef}
@@ -133,7 +134,7 @@ function CreateGroup({
                         handleRemove(user);
                       }}
                     >
-                      <UserBadge handleRemove={handleRemove} user={user} /> 
+                      <UserBadge handleRemove={handleRemove} user={user} />
                     </span>
                   );
                 })

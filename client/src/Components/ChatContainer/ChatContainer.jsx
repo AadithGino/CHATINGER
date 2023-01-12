@@ -16,7 +16,7 @@ import {
 } from "../../API/ChatApiCalls";
 import GroupInfo from "../GroupInfo/GroupInfo";
 import { userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
-import { Avatar, WrapItem } from "@chakra-ui/react";
+import { Avatar, useControllableState, WrapItem } from "@chakra-ui/react";
 
 function ChatContainer({ chat, receiveMessage }) {
   const dispatch = useDispatch();
@@ -31,6 +31,7 @@ function ChatContainer({ chat, receiveMessage }) {
   const [socketsendMessage, setsocketsendMessage] = useState(null);
   const [imageuploadloading, setimageuploadloading] = useState(false);
   const [members, setMembers] = useState();
+  const [preview, setPreview] = useState("");
 
   // const [groupInfo,setGroupInfo] = useState(false)
   const scrollRef = useRef();
@@ -209,6 +210,16 @@ function ChatContainer({ chat, receiveMessage }) {
           ) : (
             ""
           )}
+
+          {file ? (
+            <div className="image-preview">
+              {/* <span  style={{marginLeft:"60%",cursor:"pointer"}}>X</span> */}
+              <button onClick={()=>setFile('')} style={{marginLeft:"60%",cursor:"pointer"}}>X</button>
+              <img className="preview-image" src={preview ? preview : ""} alt="" />
+            </div>
+          ) : (
+            ""
+          )}
         </div>
 
         <div className="chatBoxBottom">
@@ -216,6 +227,7 @@ function ChatContainer({ chat, receiveMessage }) {
             ref={imageinputref}
             onChange={(e) => {
               setFile(e.target.files[0]);
+              setPreview(URL.createObjectURL(e.target.files[0]));
             }}
             type="file"
             className="image-upload"
@@ -233,7 +245,10 @@ function ChatContainer({ chat, receiveMessage }) {
             value={message}
             className="chatMessageInput"
             placeholder="write something..."
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={(e) => {
+              setMessage(e.target.value);
+              setFile(false);
+            }}
           ></textarea>
           {message.length == 0 && !file ? (
             <button disabled className="chatSubmitButton" type="button">

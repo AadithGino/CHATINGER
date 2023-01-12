@@ -14,19 +14,17 @@ import UserSearch from "../UserSearch/UserSearch";
 import CreateGroup from "../CreateGroup/CreateGroup";
 import Profile from "../Profile/Profile";
 import { notificationReducer } from "../../Redux/Reducer/UserHomeReducer";
+import TopBar from "../TopBar/TopBar";
 
 function Home() {
   const socket = useRef();
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const { loading, error, homedata } = useSelector((state) => state.userHome);
   const chatData = useSelector((state) => state.currentChatReducer.currentChat);
-  // const notification = useSelector((state)=>state.notificationReducer)
-  // console.log(notification);
   console.log(chatData);
   const [curentchat, setcurentchat] = useState("");
   const [receiveMessage, setRecieveMessage] = useState("");
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const [groupMembers, setgroupMembers] = useState([]);
   const [loadsearch, setloadsearch] = useState(false);
 
   const dispatch = useDispatch();
@@ -59,19 +57,7 @@ function Home() {
     <div className="main-div">
       <div className="messenger">
         <div className="chatMenu">
-          <div className="topbar">
-            <Profile />
-            <CreateGroup
-              currentuser={userdata._id}
-              setcurentchat={setcurentchat}
-              setgroupMembers={setgroupMembers}
-              groupMembers={groupMembers}
-            />
-            <h2 className="top-bar-name">
-              {userdata ? userdata.firstname : ""}
-            </h2>
-          </div>
-
+          <TopBar />
           <hr />
           <div className="chatMenuWrapper">
             {loadsearch ? (
@@ -103,8 +89,6 @@ function Home() {
                     return (
                       <div
                         onClick={() => {
-                          setcurentchat(m);
-                          console.log(curentchat);
                           dispatch(setCurrentChat(m));
                         }}
                       >
@@ -118,7 +102,7 @@ function Home() {
         </div>
         <div className="chatBox">
           <div className="chatBoxWraper">
-            {curentchat ? (
+            {chatData ? (
               <ChatContainer chat={chatData} receiveMessage={receiveMessage} />
             ) : (
               <div
@@ -140,9 +124,6 @@ function Home() {
               </div>
             )}
           </div>
-        </div>
-        <div className="chatOnline">
-          <div className="chatOnlineWrapper">onlie</div>
         </div>
       </div>
     </div>

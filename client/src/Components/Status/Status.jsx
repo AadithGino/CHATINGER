@@ -4,14 +4,16 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getStatus } from "../../API/ChatApiCalls";
-import Profile from "../Profile/Profile";
 import StatusUserList from "../StatusUserList/StatusUserList";
+import TopBar from "../TopBar/TopBar";
+import UploadStatus from "../UploadStatus/UploadStatus";
 import "./Status.css";
 
 function Status() {
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const [selectedStatus, setSelectedStatus] = useState();
   console.log(userdata);
+  let mystatus = true;
 
   const [status, setStatus] = useState();
   useEffect(() => {
@@ -25,35 +27,37 @@ function Status() {
     <div className="status-main-div">
       <div className="status-list-css">
         <div className="status-menu">
-          <div className="topbar">
-            <Profile />
-            <h2 className="top-bar-name">
-              {userdata ? userdata.firstname : ""}
-            </h2>
-          </div>
+          <TopBar />
           <hr />
 
           <div className="my-status">
             <div className="user-list-search">
               {
-                status?status.map((m)=>{
-                  if(m.userid===userdata._id){
-                 return (
-                  <h1>STATUS IS THERE</h1>
-                 )
-                  }
-                }):''
-              }
-              <div class="avatar">
-                <img
-                  className="user-img"
-                  src={
-                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                  }
-                  alt=""
-                />
-              </div>
-              <span className="user-name">My status</span>
+                
+              status
+                ? status.map((m) => {
+                    if (m.userid === userdata._id) {
+                      // return (
+                      //   <div class="avatar">
+                      //     <img
+                      //       className="user-img"
+                      //       src={
+                      //         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                      //       }
+                      //       alt=""
+                      //     />
+                      //   </div>
+                      // );
+                      mystatus=false;
+                    } else {
+                      mystatus=true;
+                    }
+                  })
+                : ""}
+
+               {
+                mystatus? <UploadStatus/> :''
+               }
             </div>
           </div>
           {status ? (
@@ -73,7 +77,15 @@ function Status() {
         </div>
       </div>
       <div className="status-view">
-        {selectedStatus ? <h1>{selectedStatus.content}</h1> : ""}
+        {selectedStatus ? (
+          <img
+            style={{ width: "300px", height: "300px" }}
+            src={selectedStatus.content}
+            alt=""
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

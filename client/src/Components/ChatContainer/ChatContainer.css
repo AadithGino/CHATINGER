@@ -14,6 +14,7 @@ body{
     overflow-x: hidden;
     margin: 0;
     padding: 5px;
+    position: relative;
 }
 .chat-body::-webkit-scrollbar-track
 {
@@ -87,10 +88,10 @@ hr{
   }
   
   .chatSubmitButton {
-    width: 70px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border: none;
-    border-radius: 5px;
+    border-radius: 100%;
     cursor: pointer;
     background-color: teal;
     color: white;
@@ -108,4 +109,19 @@ hr{
     margin-left: 40%;
     margin-right: 20px;
     
+  }
+
+  .image-preview{
+    position: absolute;
+    height: 250;
+    margin-left: 15%;
+    width: 250px;
+    padding: 10px;
+    background-color: rgb(208, 208, 208);
+    border-radius: 30px;
+  }
+
+  .preview-image{
+    height: 250;
+    width: 250px;
   }

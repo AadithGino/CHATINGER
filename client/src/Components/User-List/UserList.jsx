@@ -55,9 +55,9 @@ function UserList(props) {
                   : ""}
               </span>
             </div>
-            {
-            props.details?.latestMessage?.sender === userdata._id? <p className="latest-message-userlist">You : {props.details?.latestMessage?.content}</p> : <p className="latest-message-userlist"> {props.details?.latestMessage?.content}</p>
-            }
+            {/* {
+            props.details?.latestMessage?.sender === userdata._id? <p className="latest-message-userlist">You : {props.details?.latestMessage.isFile? 'Image':props.details?.latestMessage?.content}</p> : <p className="latest-message-userlist">{userDetails? userDetails.Firstname:''} : {props.details?.latestMessage.isFile?'Image':props.details?.latestMessage?.content}</p>
+            } */}
             <p className="latest-message-time-userlist">
               {format(props.details.updatedAt)}
             </p>

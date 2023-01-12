@@ -4,7 +4,7 @@ exports.uploadStatus = async (req, res) => {
   try {
     const id = req.body.id;
     let details;
-
+    console.log(req.body.image+"THIS IS IMAGE");
     if (req.body.image) {
       details = {
         isFile: true,
