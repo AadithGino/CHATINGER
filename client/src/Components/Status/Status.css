@@ -1,0 +1,25 @@
+.status-main-div{
+    width: 100%;
+    display: flex;
+}
+
+.status-list-css{
+    flex: 3.5;
+    width: 50%;
+    height: 100vh;
+    /* background-color: red; */
+}
+
+.status-view{
+    flex: 9.5;
+    width: 50%;
+    height: 100vh;
+    background-color: green;
+}
+
+
+.my-status{
+    background-color: pink;
+    height: 10vh;
+    margin-top: 10px;
+}

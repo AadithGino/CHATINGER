@@ -9,6 +9,7 @@ const dotenv = require("dotenv");
 const userHomeRoutes = require("./routes/UserRoutes/home-feature-routes");
 const usersLogin_SignupRouter = require("./routes/UserRoutes/signup-login");
 const userChatRoutes = require("./routes/UserRoutes/chat-Routes");
+const userStatusRoutes = require("./routes/UserRoutes/status-Routes");
 dotenv.config();
 
 const app = express();
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", usersLogin_SignupRouter);
 app.use("/", userHomeRoutes);
 app.use("/chat", userChatRoutes);
+app.use("/status",userStatusRoutes)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -54,14 +56,6 @@ app.listen(5000, () => {
   console.log(5000);
 });
 
-
-var a = 10;
-function hey(){
-   let a =100;
-  console.log(a);
-}
-hey()
-console.log(a);
 
 
 module.exports = app;

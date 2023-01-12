@@ -20,5 +20,8 @@ router.route("/change-photo").post(userhome.updateProfilePic)
 //home 
 router.post("/",userhome.Home)
 
+// status
+router.post("/status",userhome.userStatus)
+
 
 module.exports = router;

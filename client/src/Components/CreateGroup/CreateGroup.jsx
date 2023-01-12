@@ -86,7 +86,7 @@ function CreateGroup({
   };
   return (
     <>
-      <i onClick={onOpen} class="fa-solid fa-user-group"></i>
+      <i style={{marginTop:"20px"}} onClick={onOpen} class="fa-solid fa-user-group"></i>
 
       <Modal
         initialFocusRef={initialRef}

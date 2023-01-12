@@ -1,3 +1,4 @@
+const statusSchema = require("../../model/statusModel");
 const userSchema = require("../../model/usermodel");
 const chatSChema = require("../../model/chatModel");
 const generateToken = require("../../JWT/generatetoken");
@@ -41,6 +42,7 @@ exports.findUserDetails = async (req, res) => {
 exports.UpdateName = async (req, res) => {
   let id = req.body.id;
   const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
   const fullname = firstname + " " + lastname;
 
   try {
@@ -62,7 +64,7 @@ exports.UpdateName = async (req, res) => {
             firstname: result.Firstname,
             lastname: result.lastname,
             number: result.number,
-            photo:result.photo,
+            photo: result.photo,
             token: generateToken(result._id),
           };
           res.status(200).json(details);
@@ -71,13 +73,11 @@ exports.UpdateName = async (req, res) => {
   } catch (error) {}
 };
 
-
-exports.updateProfilePic = async (req,res)=>{
-  
-  let id =  req.body.id;
+exports.updateProfilePic = async (req, res) => {
+  let id = req.body.id;
   let image = req.body.image;
 
-  userSchema.updateOne({_id:id},{$set:{photo:image}}).then((data)=>{
+  userSchema.updateOne({ _id: id }, { $set: { photo: image } }).then((data) => {
     console.log(data);
     userSchema.findOne({ _id: id }).then((result) => {
       let details = {
@@ -85,10 +85,20 @@ exports.updateProfilePic = async (req,res)=>{
         firstname: result.Firstname,
         lastname: result.lastname,
         number: result.number,
-        photo:result.photo,
+        photo: result.photo,
         token: generateToken(result._id),
       };
       res.status(200).json(details);
     });
-  })
-}
+  });
+};
+
+exports.userStatus = async (req, res) => {
+  try {
+    let name = "25 sec";
+    let image = "image";
+    statusSchema.create({ name, image }).then((data) => {
+      res.status(200).json(data);
+    });
+  } catch (error) {}
+};

@@ -15,7 +15,7 @@ function UserList(props) {
   const id = props.details.members.find((m) => m !== userdata._id);
   console.log(id + "THIS IS THE ID IN USERLIST");
   const fetchuserdata = async () => {
-    const { data } = await findUserDetails(id);
+    const { data } = await findUserDetails(id)
     setuserdetails(data);
     console.log(data);
   };
