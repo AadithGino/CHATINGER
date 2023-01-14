@@ -22,3 +22,4 @@ export const changeProfileImage = (id,image) => API.post("/change-photo",{id,ima
 export const removeUserFromGroup = (id,chatid) => API.post("/chat/group-remove",{id,chatid},config)
 export const getStatus = (id) => API.post('/status/get-status')
 export const uploadStatus = (id,image) =>API.post("/status/status-upload",{id,image},config)
+export const getMyStatus = (id) => API.get("/status/get-my-status?id="+id)

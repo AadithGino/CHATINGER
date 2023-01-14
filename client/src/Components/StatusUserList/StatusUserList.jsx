@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { findUserDetails } from "../../API/ChatApiCalls";
 import { WrapItem, Avatar } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
+import {format} from 'timeago.js'
 
 function StatusUserList({ user }) {
   const userdata = useSelector((state) => state.loginReducer.userdata);
@@ -32,7 +33,7 @@ function StatusUserList({ user }) {
                   {userDetails ? userDetails.fullname : ""}
                 </span>
               </div>
-
+              <p>{format(user?user.time:'')}</p>
               <hr className="separating-line" />
             </div>
           </div>

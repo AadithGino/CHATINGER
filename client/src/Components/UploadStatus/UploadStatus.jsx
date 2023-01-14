@@ -49,8 +49,10 @@ function UploadStatus({ setStatus }) {
       .then((res) => res.json())
       .then((data) => {
         uploadStatus(userdata._id, data.url).then((result) => {
+          console.log(result);
           getStatus().then((results) => {
             setStatus(results.data);
+            console.log(results);
             onClose()
           });
         });

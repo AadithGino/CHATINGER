@@ -3,7 +3,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { getStatus } from "../../API/ChatApiCalls";
+import { getMyStatus, getStatus } from "../../API/ChatApiCalls";
 import StatusUserList from "../StatusUserList/StatusUserList";
 import TopBar from "../TopBar/TopBar";
 import UploadStatus from "../UploadStatus/UploadStatus";
@@ -12,14 +12,19 @@ import "./Status.css";
 function Status() {
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const [selectedStatus, setSelectedStatus] = useState();
+  const [myStatus, setMyStatus] = useState(false);
   console.log(userdata);
-  let mystatus = true;
 
   const [status, setStatus] = useState();
   useEffect(() => {
     getStatus().then((data) => {
-      console.log(data.data[0]);
       setStatus(data.data);
+    });
+
+    getMyStatus(userdata._id).then((data) => {
+      if (data.data != null) {
+        setMyStatus(data.data);
+      }
     });
   }, []);
 
@@ -30,36 +35,23 @@ function Status() {
           <TopBar />
           <hr />
 
-          <div className="my-status">
-            <div className="user-list-search">
-              {
-                
-              status
-                ? status.map((m) => {
-                    if (m.userid === userdata._id) {
-                      // return (
-                      //   <div class="avatar">
-                      //     <img
-                      //       className="user-img"
-                      //       src={
-                      //         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-                      //       }
-                      //       alt=""
-                      //     />
-                      //   </div>
-                      // );
-                      mystatus=false;
-                    } else {
-                      mystatus=true;
-                    }
-                  })
-                : ""}
-
-               {
-                mystatus? <UploadStatus/> :''
-               }
+          {myStatus ? (
+            <div className="my-status">
+              <div className="user-list-search">
+                <div class="avatar">
+                  <img
+                    className="user-img"
+                    src={myStatus ? myStatus.content : ""}
+                    alt=""
+                  />
+                </div>
+                <span>MY STATUS</span>
+              </div>
             </div>
-          </div>
+          ) : (
+            <UploadStatus setStatus={setStatus} />
+          )}
+
           {status ? (
             status.map((m) => {
               console.log(m);
@@ -79,7 +71,7 @@ function Status() {
       <div className="status-view">
         {selectedStatus ? (
           <img
-            style={{ width: "300px", height: "300px" }}
+            className="status-image-view"
             src={selectedStatus.content}
             alt=""
           />

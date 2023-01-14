@@ -1,10 +1,13 @@
 const statusSchema = require("../../model/statusModel");
-const chatSchema = require("../../model/chatModel")
+const chatSchema = require("../../model/chatModel");
+
+// upload status 
+
 exports.uploadStatus = async (req, res) => {
   try {
     const id = req.body.id;
     let details;
-    console.log(req.body.image+"THIS IS IMAGE");
+    console.log(req.body.image + "THIS IS IMAGE");
     if (req.body.image) {
       details = {
         isFile: true,
@@ -19,7 +22,7 @@ exports.uploadStatus = async (req, res) => {
       };
     }
 
-    statusSchema.create( details ).then((data) => {
+    statusSchema.create(details).then((data) => {
       res.status(200).json(data);
     });
   } catch (error) {
@@ -27,14 +30,26 @@ exports.uploadStatus = async (req, res) => {
   }
 };
 
+
+// get status
+
 exports.getStatus = async (req, res) => {
   try {
     console.log("STATY");
-    statusSchema.find({}).then((data)=>{
-      res.status(200).json(data)
-    })
-   
-  } catch (error) {
+    statusSchema.find({}).then((data) => {
+      res.status(200).json(data);
+    });
+  } catch (error) {}
+};
 
-  }
+
+// getting the logged in user details. 
+
+exports.getMyStatus = async (req, res) => {
+  try {
+    const id = req.query.id;
+    statusSchema.findOne({ userid: id }).then((data) => {
+      res.status(200).json(data);
+    });
+  } catch (error) {}
 };
