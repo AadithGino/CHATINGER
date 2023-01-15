@@ -1,19 +1,21 @@
-import { m } from "framer-motion";
+import { Avatar } from "@chakra-ui/react";
 import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { getMyStatus, getStatus } from "../../API/ChatApiCalls";
+import { format } from "timeago.js";
+import { addView, getMyStatus, getStatus } from "../../API/ChatApiCalls";
 import StatusUserList from "../StatusUserList/StatusUserList";
 import TopBar from "../TopBar/TopBar";
 import UploadStatus from "../UploadStatus/UploadStatus";
+import UserListCommon from "../UserListCommon/UserListCommon";
 import "./Status.css";
 
 function Status() {
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const [selectedStatus, setSelectedStatus] = useState();
   const [myStatus, setMyStatus] = useState(false);
-  console.log(userdata);
+  const [userData, setUserData] = useState();
 
   const [status, setStatus] = useState();
   useEffect(() => {
@@ -37,7 +39,14 @@ function Status() {
 
           {myStatus ? (
             <div className="my-status">
-              <div className="user-list-search">
+              <div
+                onClick={() => {
+                  setSelectedStatus(myStatus ? myStatus : "");
+                  setUserData(userdata);
+                  console.log(userdata);
+                }}
+                className="user-list-search"
+              >
                 <div class="avatar">
                   <img
                     className="user-img"
@@ -46,10 +55,11 @@ function Status() {
                   />
                 </div>
                 <span>MY STATUS</span>
+                <i className="fa-solid fa-ellipsis-vertical action-icon"></i>
               </div>
             </div>
           ) : (
-            <UploadStatus setStatus={setStatus} />
+            <UploadStatus status={status} setStatus={setStatus} />
           )}
 
           {status ? (
@@ -57,8 +67,15 @@ function Status() {
               console.log(m);
               if (m.userid !== userdata._id) {
                 return (
-                  <span onClick={() => setSelectedStatus(m)}>
-                    <StatusUserList user={m} />
+                  <span
+                    onClick={() => {
+                      setSelectedStatus(m);
+                      addView(userdata._id, m._id).then((data) => {
+                        console.log(data);
+                      });
+                    }}
+                  >
+                    <StatusUserList setUserData={setUserData} user={m} />
                   </span>
                 );
               }
@@ -70,11 +87,55 @@ function Status() {
       </div>
       <div className="status-view">
         {selectedStatus ? (
-          <img
-            className="status-image-view"
-            src={selectedStatus.content}
-            alt=""
-          />
+          <>
+            <div className="status-view-div">
+              <div className="top-user-details-status">
+                <div className="chat-header">
+                  <Avatar
+                    style={{ margin: "0" }}
+                    size={"md"}
+                    name={userData ? userData.fullname : ""}
+                    src={userData ? userData.photo : ""}
+                  />
+
+                  <h3 className="user-name">
+                    {userData ? userData.fullname : ""}
+                  </h3>
+                  <br />
+                  <p style={{ color: "black" }}>
+                    {selectedStatus ? format(selectedStatus?.time) : ""}
+                  </p>
+                </div>
+              </div>
+              <div className="content-status-div">
+                <img
+                  className="status-image-view"
+                  src={selectedStatus ? selectedStatus.content : ""}
+                  alt=""
+                />
+              </div>
+              {selectedStatus.userid == userdata._id ? (
+                <>
+                  {" "}
+                  <h2>MY STATUS</h2>
+                  <h3 style={{color:"white"}}>Views : ( {selectedStatus ? selectedStatus.views.length : ""} )</h3>
+                  <div className="view-user-list-status">
+                    {selectedStatus
+                      ? selectedStatus.views.map((data) => {
+                          return (
+                            <>
+                              <UserListCommon user={data} />
+                            </>
+                          );
+                        })
+                      : ""}
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
+            </div>
+          </>
         ) : (
           ""
         )}

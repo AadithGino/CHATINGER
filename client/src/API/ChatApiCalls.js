@@ -9,8 +9,8 @@ const config = {
 
 export const findUserDetails = (id) => API.get(`/find-user?id=`+id)
 export const fetchUserMessages = (id) => API.get(`/chat/get-messages?id=`+id)
-export const sendMessage = ( id, chatid, message ) => API.post('/chat/send-message',{ id, chatid, message },config)
-export const sendImage = ( id, chatid, image ) => API.post('/chat/send-message',{ id, chatid, image },config)
+export const sendMessage = ( id, chatid, message,token ) => API.post('/chat/send-message',{ id, chatid, message,token },config)
+export const sendImage = ( id, chatid, image,token ) => API.post('/chat/send-message',{ id, chatid, image,token },config)
 export const userSearch = (id,search) => API.post('/search',{id,search},config)
 export const userSearchforGroup = (id,search) => API.post('/search',{id,search},config)
 export const userCreateChat = (id,user) => API.post('/chat',{id,user},config)
@@ -23,3 +23,4 @@ export const removeUserFromGroup = (id,chatid) => API.post("/chat/group-remove",
 export const getStatus = (id) => API.post('/status/get-status')
 export const uploadStatus = (id,image) =>API.post("/status/status-upload",{id,image},config)
 export const getMyStatus = (id) => API.get("/status/get-my-status?id="+id)
+export const addView = (user,status) => API.post("/status/add-view",{user,status},config)

@@ -79,6 +79,7 @@ function Profile() {
           <Avatar
             onClick={() => {
               onOpen();
+              navigate('/home')
             }}
             name={userdata.firstname}
             src={userdata.photo}
@@ -111,8 +112,7 @@ function Profile() {
             <Input
               onChange={(e) => {
                 console.log(e.target.files[0]);
-                // setImage(e.target.files[0])
-                // console.log(image);
+                
                 changeProfilePic(e.target.files[0]);
               }}
               ref={fileRef}

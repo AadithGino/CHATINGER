@@ -4,13 +4,14 @@ import { WrapItem, Avatar } from "@chakra-ui/react";
 import { useSelector } from "react-redux";
 import {format} from 'timeago.js'
 
-function StatusUserList({ user }) {
+function StatusUserList({ user,setUserData }) {
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const [userDetails, setuserdetails] = useState("");
 
   const fetchuserdata = async () => {
     const { data } = await findUserDetails(user.userid);
     setuserdetails(data);
+    
     console.log(data);
   };
   useEffect(() => {
@@ -21,7 +22,7 @@ function StatusUserList({ user }) {
       <>
         <div className="home-page">
           <div>
-            <div className="user-list-main">
+            <div onClick={()=>setUserData(userDetails)} className="user-list-main">
               <div className="user-list">
                 <WrapItem style={{ marginRight: "10px" }}>
                   <Avatar

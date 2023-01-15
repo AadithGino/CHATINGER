@@ -83,6 +83,7 @@ function CreateGroup({}) {
   };
   return (
     <>
+    <div>
       <i
         style={{ marginTop: "20px" }}
         onClick={onOpen}
@@ -170,6 +171,7 @@ function CreateGroup({}) {
           </ModalFooter>
         </ModalContent>
       </Modal>
+      </div>
     </>
   );
 }

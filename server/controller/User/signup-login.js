@@ -80,10 +80,11 @@ exports.Login = async (req, res) => {
             if (data) {
               let details = {
                 _id: result._id,
+                fullanme: result.fullname,
                 firstname: result.Firstname,
                 lastname: result.lastname,
                 number: result.number,
-                photo:result.photo,
+                photo: result.photo,
                 token: generateToken(result._id),
               };
               res.status(200).json(details);

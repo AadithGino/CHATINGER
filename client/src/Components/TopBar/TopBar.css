@@ -2,6 +2,7 @@
     background-color: rgb(65, 65, 65);
     height: 70px;
     width: 40%;
+    padding-right: 30px;
     
 }
 .group-img{
@@ -18,4 +19,8 @@
     margin-top: 10px;
     margin-left: 10px;
     border: 2px solid black;
+}
+
+.status-icon{
+    margin-top: 20px;
 }

@@ -23,12 +23,11 @@ exports.CreateChat = async (req, res) => {
 };
 
 exports.GetChats = async (req, res) => {
-  let users = [];
   try {
     let id = req.query.id;
     console.log(id);
     ``;
-    let secondid = req.query.id;
+
     chatSchema
       .find({ members: { $in: [id] } })
       .sort({ updatedAt: -1 })
@@ -40,6 +39,7 @@ exports.GetChats = async (req, res) => {
 
 exports.sendMessage = async (req, res) => {
   let chatid = req.body.chatid;
+  console.log(req.body.token+"TH");
   try {
     let message = req.body.message;
     let details;
@@ -51,6 +51,7 @@ exports.sendMessage = async (req, res) => {
         content: req.body.image,
         sender: req.body.id,
         time: Date.now(),
+        token:req.body.token
       };
     } else {
       details = {
@@ -59,6 +60,7 @@ exports.sendMessage = async (req, res) => {
         content: message,
         sender: req.body.id,
         time: Date.now(),
+        token:req.body.token
       };
     }
     chatSchema

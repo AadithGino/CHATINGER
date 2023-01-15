@@ -16,7 +16,7 @@ import "./UploadStatus.css";
 import { getStatus, uploadStatus } from "../../API/ChatApiCalls";
 import { useSelector } from "react-redux";
 
-function UploadStatus({ setStatus }) {
+function UploadStatus({ setStatus, status }) {
   const userdata = useSelector((state) => state.loginReducer.userdata);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [text, setText] = useState("");
@@ -50,11 +50,9 @@ function UploadStatus({ setStatus }) {
       .then((data) => {
         uploadStatus(userdata._id, data.url).then((result) => {
           console.log(result);
-          getStatus().then((results) => {
-            setStatus(results.data);
-            console.log(results);
-            onClose()
-          });
+          console.log(...status);
+          setStatus([...status, result.data]);
+          onClose();
         });
       });
   };

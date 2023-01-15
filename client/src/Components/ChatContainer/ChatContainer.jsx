@@ -17,6 +17,7 @@ import {
 import GroupInfo from "../GroupInfo/GroupInfo";
 import { userHome } from "../../Redux/Actions/UserActions/UserHomeAction";
 import { Avatar, useControllableState, WrapItem } from "@chakra-ui/react";
+import auth from "../../MessageAuth/MessageAuth";
 
 function ChatContainer({ chat, receiveMessage }) {
   const dispatch = useDispatch();
@@ -55,6 +56,8 @@ function ChatContainer({ chat, receiveMessage }) {
       userdata._id != receiveMessage.data[0].sender
     ) {
       setMessages([...messages, receiveMessage.data]);
+      console.log(receiveMessage.data[0].token+"THIS SI THE TOJEN");
+      // auth(receiveMessage.data[0].token)
       dispatch(userHome());
 
       scrollRef.current.scrollIntoView();
@@ -80,8 +83,15 @@ function ChatContainer({ chat, receiveMessage }) {
         .then(async (result) => {
           console.log(result.url);
           let image = result.url;
-          const { data } = await sendImage(userdata._id, chat._id, image);
-          console.log(data);
+          const { data } = await sendImage(
+            userdata._id,
+            chat._id,
+            image,
+            userdata.token
+          );
+
+          
+
           setMessages([...messages, data]);
           setsocketsendMessage({ data, recieverid });
           setFile("");
@@ -90,7 +100,12 @@ function ChatContainer({ chat, receiveMessage }) {
           setMessage("");
         });
     } else {
-      const { data } = await sendMessage(userdata._id, chat._id, message);
+      const { data } = await sendMessage(
+        userdata._id,
+        chat._id,
+        message,
+        userdata.token
+      );
       setMessages([...messages, data]);
       setsocketsendMessage({ data, recieverid });
       dispatch(userHome());
@@ -214,8 +229,17 @@ function ChatContainer({ chat, receiveMessage }) {
           {file ? (
             <div className="image-preview">
               {/* <span  style={{marginLeft:"60%",cursor:"pointer"}}>X</span> */}
-              <button onClick={()=>setFile('')} style={{marginLeft:"60%",cursor:"pointer"}}>X</button>
-              <img className="preview-image" src={preview ? preview : ""} alt="" />
+              <button
+                onClick={() => setFile("")}
+                style={{ marginLeft: "60%", cursor: "pointer" }}
+              >
+                X
+              </button>
+              <img
+                className="preview-image"
+                src={preview ? preview : ""}
+                alt=""
+              />
             </div>
           ) : (
             ""

@@ -9,4 +9,6 @@ router.route("/get-status").post(statusController.getStatus)
 
 router.route("/get-my-status").get(statusController.getMyStatus)
 
+router.route("/add-view").post(statusController.addView)
+
 module.exports = router;

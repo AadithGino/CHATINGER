@@ -1,7 +1,8 @@
 const statusSchema = require("../../model/statusModel");
 const chatSchema = require("../../model/chatModel");
+const { ObjectId } = require("mongodb");
 
-// upload status 
+// upload status
 
 exports.uploadStatus = async (req, res) => {
   try {
@@ -30,7 +31,6 @@ exports.uploadStatus = async (req, res) => {
   }
 };
 
-
 // get status
 
 exports.getStatus = async (req, res) => {
@@ -42,8 +42,7 @@ exports.getStatus = async (req, res) => {
   } catch (error) {}
 };
 
-
-// getting the logged in user details. 
+// getting the logged in user details.
 
 exports.getMyStatus = async (req, res) => {
   try {
@@ -51,5 +50,34 @@ exports.getMyStatus = async (req, res) => {
     statusSchema.findOne({ userid: id }).then((data) => {
       res.status(200).json(data);
     });
+  } catch (error) {}
+};
+
+// add views
+
+exports.addView = async (req, res) => {
+  console.log("ADD VIEW");
+  try {
+    const statusid = req.body.status;
+    const userid = req.body.user;
+    const details = {
+      userid: ObjectId(userid),
+      time: Date.now(),
+    };
+    statusSchema
+      .findOne({ _id: statusid, "views.userid": ObjectId(userid) })
+      .then((data) => {
+        console.log(data);
+        if (data === null) {
+          statusSchema
+            .updateOne({ _id: statusid }, { $addToSet: { views: details } })
+            .then((data) => {
+              res.status(200).json(data);
+            });
+        }
+      });
+
+   
+
   } catch (error) {}
 };
